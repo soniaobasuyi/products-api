@@ -26,4 +26,20 @@ export class ProductService {
     }
     return product;
   }
+
+  async delete(id: number): Promise<Product | null> {
+    const product = await this.productRepository.findOne({ where: { id } });
+    await this.productRepository.delete(id);
+    return product;
+  }
+
+  async update(id: number, updatedProduct: Partial<Product>): Promise<Product> {
+    const product = await this.productRepository.findOne({ where: { id } });
+
+    if (!product) {
+      throw new NotFoundException(`Item with the id ${id} not found`);
+    }
+    Object.assign(product, updatedProduct);
+    return this.productRepository.save(product);
+  }
 }
