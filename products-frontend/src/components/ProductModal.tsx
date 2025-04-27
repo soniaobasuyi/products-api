@@ -9,14 +9,19 @@ export default function ProductModal({ isOpen, onClose, title }: ModalProps) {
 
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [price, setPrice] = useState<number>(0);
-  const [qty, setQty] = useState<number>(0);
+  const [price, setPrice] = useState<string>('');
+  const [qty, setQty] = useState<string>('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newProduct = { name, description, price, qty, };
+    const newProduct = {
+      name,
+      description,
+      price: Number(price),
+      qty: Number(qty),
+    };
 
     try {
       const response = await axiosInstance.post('/product', newProduct);
@@ -65,8 +70,9 @@ export default function ProductModal({ isOpen, onClose, title }: ModalProps) {
               <input
                 type='number'
                 value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
+                onChange={(e) => setPrice(e.target.value)}
                 className='w-full border rounded p-2'
+                placeholder='Enter product price'
               />
             </div>
 
@@ -75,8 +81,9 @@ export default function ProductModal({ isOpen, onClose, title }: ModalProps) {
               <input
                 type='number'
                 value={qty}
-                onChange={(e) => setQty(Number(e.target.value))}
+                onChange={(e) => setQty(e.target.value)}
                 className='w-full border rounded p-2'
+                placeholder='Enter product quantity'
               />
             </div>
 
