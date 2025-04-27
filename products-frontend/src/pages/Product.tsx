@@ -2,6 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ProductInterface } from '../interfaces/product.interface.ts';
 import axiosInstance from '../services/axios.ts';
+import EditProductModal from '../components/EditProductModal.tsx';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal.tsx';
 
 export default function Product() {
   const params = useParams();
@@ -9,6 +11,8 @@ export default function Product() {
   const [error, setError] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductInterface | null>(null);
   const navigate = useNavigate();
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -20,12 +24,21 @@ export default function Product() {
       } catch (error) {
         setError(true);
         setLoading(false);
-        console.error('error fetching product:', error);
+        console.error('Error fetching product:', error);
       }
     }
 
     fetchProduct();
   }, [params.id]);
+
+  const handleDelete = async () => {
+    try {
+      await axiosInstance.delete(`/product/${params.id}`);
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
 
   return (
     <>
@@ -38,9 +51,36 @@ export default function Product() {
           <p className='text-green-700 font-semibold mb-2'>${product.price}</p>
           <p className='text-gray-600 mb-6'>Quantity: {product.qty}</p>
 
-          <button onClick={() => navigate('/')} className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
-            Back to Products
-          </button>
+          <div className='flex justify-between'>
+            <button onClick={() => navigate('/')} className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
+              Back to Products
+            </button>
+
+            <div>
+              <button onClick={() => setIsEditModalOpen(true)} className='p-3 text-gray-600 hover:text-gray-900'>
+                Edit
+              </button>
+              <button onClick={() => setIsDeleteModalOpen(true)} className='p-3 text-red-500 hover:text-red-700'>
+                Delete
+              </button>
+            </div>
+          </div>
+
+          {isEditModalOpen && (
+            <EditProductModal
+              product={product}
+              onClose={() => setIsEditModalOpen(false)}
+              isOpen={isEditModalOpen}
+              refreshProduct={() => window.location.reload()}
+            />
+          )}
+
+          {isDeleteModalOpen && (
+            <ConfirmDeleteModal
+              onConfirm={handleDelete}
+              onCancel={() => setIsDeleteModalOpen(false)}
+            />
+          )}
         </div>
       )}
     </>
