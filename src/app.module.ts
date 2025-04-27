@@ -21,7 +21,7 @@ import { join } from 'path';
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'products-frontend', 'dist'),
+      rootPath: join(__dirname, 'products-frontend', 'dist'),
     }),
     ProductModule,
   ],
