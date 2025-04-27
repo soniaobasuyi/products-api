@@ -2,6 +2,7 @@ import { ModalProps } from '../interfaces/modal.interface.ts';
 import { useState } from 'react';
 import * as React from 'react';
 import axiosInstance from '../services/axios.ts';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductModal({ isOpen, onClose, title }: ModalProps) {
   if (!isOpen) return null;
@@ -10,6 +11,7 @@ export default function ProductModal({ isOpen, onClose, title }: ModalProps) {
   const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
   const [qty, setQty] = useState<number>(0);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +21,8 @@ export default function ProductModal({ isOpen, onClose, title }: ModalProps) {
     try {
       const response = await axiosInstance.post('/product', newProduct);
       console.log('New product created!', response.data);
+      if (onClose) onClose();
+      navigate(`/product/${response.data.id}`);
     } catch (error) {
       console.error('Error creating product:', error);
     }

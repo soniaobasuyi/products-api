@@ -50,14 +50,14 @@ export default function ProductList() {
                   <Link to={`/product/${product.id}`}>
                     <div
                       key={product.id}
-                      className="border rounded-lg p-4 shadow-md hover:scale-105 transition-scale duration-300"
+                      className='border rounded-lg p-4 shadow-md hover:scale-105 transition-scale duration-300'
                     >
-                      <h2 className="text-lg font-semibold">{product.name}</h2>
-                      <p className="text-gray-600">{product.description}</p>
-                      <p className="mt-2 font-semibold text-green-700">
+                      <h2 className='text-lg font-semibold'>{product.name}</h2>
+                      <p className='text-gray-600 line-clamp-2'>{product.description}</p>
+                      <p className='mt-2 font-semibold text-green-700'>
                         ${product.price}
                       </p>
-                      <p className="mt-2 text-red-700">{product.qty} left</p>
+                      <p className='mt-2 text-red-700'>{product.qty} left</p>
                     </div>
                   </Link>
                 </>
