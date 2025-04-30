@@ -15,6 +15,9 @@ import { join } from 'path';
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'products-frontend', 'dist'),
