@@ -46,10 +46,9 @@ export default function ProductList() {
             <h1 className='text-2xl font-semibold mb-6'>Products</h1>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
               {products.map((product) => (
-                <>
+                <div key={product.id}>
                   <Link to={`/product/${product.id}`}>
                     <div
-                      key={product.id}
                       className='border rounded-lg p-4 shadow-md hover:scale-105 transition-scale duration-300'
                     >
                       <h2 className='text-lg font-semibold'>{product.name}</h2>
@@ -60,7 +59,7 @@ export default function ProductList() {
                       <p className='mt-2 text-red-700'>{product.qty} left</p>
                     </div>
                   </Link>
-                </>
+                </div>
               ))}
             </div>
           </div>
